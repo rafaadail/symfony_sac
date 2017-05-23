@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}SacBundle:Chamado:chamado{% endblock %}
+
+{% block body %}
+    <div id="sidebar">
+        {{ render(controller(
+        'SacBundle:Chamado:list',
+        { 'max': 3 }
+        )) }}
+    </div>
+{% endblock %}

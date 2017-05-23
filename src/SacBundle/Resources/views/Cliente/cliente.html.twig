@@ -1,0 +1,102 @@
+{% extends "::base.html.twig" %}
+
+
+{% set first = 1%}
+
+{% set previous = max(range(1, clientes.currentPageNumber-1)) %}
+{% set last = clientes.getTotalItemCount / 5 %}
+{% set last = last|round %}
+{% set next = min( last, clientes.currentPageNumber+1 ) %}
+{% set pages_range = range(max(first, clientes.currentPageNumber-3), min(last, clientes.currentPageNumber+3)) %}
+
+{% block title %}Cliente{% endblock %}
+{% block body %}
+
+<h2 class="sub-header">Lista de Clientes</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(clientes, 'Id'|trans({foo:'bar'},'messages'), 'a.id' )|raw }}</th>
+            <th{% if clientes.isSorted('a.email') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(clientes, 'E-mail', 'a.email')|raw }}</th>
+            <th{% if clientes.isSorted('a.dataCriacao') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(clientes, 'Data Criação', 'a.dataCriacao')|raw }}</th>
+        </tr>
+
+
+        </thead>
+        <tbody>
+        {% for cliente in clientes|reverse %}
+            <tr>
+                <td>{{ cliente.id }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.dataCriacao| date('d-m-Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+    {% if last > 1 %}
+    {%set first = 1 %}
+    {%set last = last %}
+    {%set query=  {}  %}
+    {%set pageParameterName = 'page' %}
+
+    <div class="navigation">
+        <ul class="pagination">
+
+            {% if first is  defined and clientes.currentPageNumber != first %}
+
+                <li class="previous"><a href="/cliente?page={{ previous }}">{{ 'Previous'|trans }}</a></li>
+
+            {% else %}
+                <li class="disabled">
+                    <span>{{ 'Previous'|trans }}</span>
+                </li>
+            {% endif %}
+
+
+            {% for page in pages_range %}
+                {% if page != clientes.currentPageNumber %}
+
+                        <li><a href="/cliente?page={{ page }}">{{ page }}</a></li>
+               {% else %}
+                    <li class="active">
+                        <span>{{ page }}</span>
+                    </li>
+                {% endif %}
+
+            {% endfor %}
+
+
+            {% if last is defined and clientes.currentPageNumber != last %}
+                <li><a href="/cliente?page={{ next }}">{{ 'Next'|trans }}</a></li>
+
+            {% else %}
+                <li class="disabled">
+                    <span>{{ "Next"|trans }}</span>
+                </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+    {% endif %}
+    <form action="{{ path('cliente_create') }}">
+        <tfoot>
+        <tr>
+            <td colspan="5" style="text-align: left;">
+                <button class="btn btn-success" type="submit">Adicionar Cliente</button>
+
+            </td>
+        </tr>
+        </tfoot>
+    </form>
+
+</div>
+
+{% endblock %}
+
+

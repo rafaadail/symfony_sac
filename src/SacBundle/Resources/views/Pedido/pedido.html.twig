@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Pedido{% endblock %}
+
+{% block body %}
+    <div id="sidebar">
+        {{ render(controller(
+        'SacBundle:Pedido:list',
+        { 'max': 3 }
+        )) }}
+    </div>
+{% endblock %}
+

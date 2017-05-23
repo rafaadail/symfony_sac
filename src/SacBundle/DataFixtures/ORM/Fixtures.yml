@@ -1,0 +1,10 @@
+SacBundle\Entity\Cliente:
+    cliente_{1..15}:
+      email (unique) : '<username()>@example.org'
+      dataCriacao: '<(new \DateTime())>'
+
+SacBundle\Entity\Pedido:
+    pedido_{1..30}:
+      idCliente: '<numberBetween(1,14)>'
+      dataCriacao: '<(new \DateTime())>'
+      valor: '<numberBetween(300,1000)>'

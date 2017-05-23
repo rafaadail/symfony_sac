@@ -1,0 +1,136 @@
+{% extends "::base.html.twig" %}
+
+{% set first = 1%}
+
+{% set previous = max(range(1, chamados.currentPageNumber-1)) %}
+{% set last = chamados.getTotalItemCount / 5 %}
+{% set last = last|round %}
+{% set next = min( last, chamados.currentPageNumber+1 ) %}
+{% set pages_range = range(max(first, chamados.currentPageNumber-3), min(last, chamados.currentPageNumber+3)) %}
+
+{% block title %}Chamado{% endblock %}
+{% block body %}
+<div class="grid">
+    <h2 class="sub-header">Lista de Chamados</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Cliente</th>
+                <th>Pedido</th>
+                <th>E-mail</th>
+                <th>Data Criação</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for chamado in chamados %}
+                <tr >
+                    <td>{{ chamado.id }}</td>
+                    <td>{{ chamado.titulo }}</td>
+                    <td>{{ chamado.nomeCliente }}</td>
+                    <td>{{ chamado.idPedido }}</td>
+                    <td>{{ chamado.email }}</td>
+                    <td>{{ chamado.dataCriacao| date('d-m-Y') }}</td>
+                    <td>
+
+                        <a href="{{ path('chamado_visualizar', {id: chamado.id}) }}" class="btn btn-info" role="button" aria-pressed="true">Visualizar</a>
+                        <a href="{{ path('chamado_delete', {id: chamado.id}) }}" class="btn btn-danger" role="button" aria-pressed="true">Excluir</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+        {% if last > 1 %}
+            {%set first = 1 %}
+            {%set last = last %}
+            {%set query=  {}  %}
+            {%set pageParameterName = 'page' %}
+
+            <div class="navigation">
+                <ul class="pagination">
+
+                    {% if first is  defined and chamados.currentPageNumber != first %}
+
+                        <li class="previous"><a href="/chamado?page={{ previous }}">{{ 'Previous'|trans }}</a></li>
+
+                    {% else %}
+                        <li class="disabled">
+                            <span>{{ 'Previous'|trans }}</span>
+                        </li>
+                    {% endif %}
+
+
+                    {% for page in pages_range %}
+                        {% if page != chamados.currentPageNumber %}
+
+                            <li><a href="/chamado?page={{ page }}">{{ page }}</a></li>
+                        {% else %}
+                            <li class="active">
+                                <span>{{ page }}</span>
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if last is defined and chamados.currentPageNumber != last %}
+                        <li><a href="/chamado?page={{ next }}">{{ 'Next'|trans }}</a></li>
+
+                    {% else %}
+                        <li class="disabled">
+                            <span>{{ "Next"|trans }}</span>
+                        </li>
+                    {% endif %}
+
+                </ul>
+
+            </div>
+        {% endif %}
+
+
+
+    </div>
+
+
+    <tfoot>
+    <tr>
+        <td colspan="5" style="text-align: left;">
+
+            <a href="{{ path('chamado_create') }}" class="btn btn-success" role="button" aria-pressed="true">Adicionar Chamado</a>
+            <button class="btn btn-warning" onclick="visibilityChamado()" type="submit">Pesquisar Chamado</button>
+
+
+        </td>
+    </tr>
+    </tfoot>
+</div>
+
+<div >
+    <div class="search" style="display:none">
+
+        <form class="form-horizontal" role="form">
+            <fieldset>
+                <legend>Pesquisa</legend>
+                <div class="form-group">
+                    <label for="contain">E-mail</label>
+                    <input class="form-control" type="text" name="email" />
+                </div>
+                <div class="form-group">
+                    <label for="contain">Pedido</label>
+                    <input class="form-control" type="text" name="idPedido" />
+                </div>
+                <button type="submit" class="btn btn-info" >Buscar</button>
+                <button type="submit" class="btn btn-primary" onclick="visibilityChamado()" >Voltar</button>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+
+
+

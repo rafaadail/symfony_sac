@@ -1,0 +1,30 @@
+<h2 class="sub-header">Lista de Pedidos</h2>
+<div class="table-responsive">
+        <table class="table table-striped">
+                <thead>
+                <tr>
+                        <th>Pedido</th>
+                        <th>Id Cliente</th>
+                        <th>E-mail</th>
+                        <th>Data Criação</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pedido in pedidos|reverse %}
+                <tr>
+                        <td>{{ pedido.id }}</td>
+                        <td>{{ pedido.idCliente }}</td>
+                        <td>{{ pedido.valor }}</td>
+                        <td>{{ pedido.dataCriacao| date('d-m-Y') }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+                </form>
+        </table>
+
+</div>
+
+
+
+

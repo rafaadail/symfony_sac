@@ -1,0 +1,8 @@
+sac:
+    resource: "@SacBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
