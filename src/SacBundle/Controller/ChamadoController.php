@@ -36,7 +36,7 @@ class ChamadoController extends Controller
     /**
      * @Route("/chamado", name="chamado_index")
      */
-    public function oldchamadoIndex(Request $request)
+    public function chamadoIndex(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -46,25 +46,22 @@ class ChamadoController extends Controller
 
         if($idPedido or $email){
             if($idPedido && empty($email)) {
-                $parameters = array(
-                    'idPedido' => $idPedido
 
-                );
-                $dql = "SELECT ch FROM SacBundle:Chamado ch WHERE ch.idPedido = $idPedido";
+                $dql = "SELECT a FROM SacBundle:Chamado a WHERE a.idPedido = $idPedido";
 
             }elseif(empty($idPedido) && $email){
 
-                $dql = "SELECT ch FROM SacBundle:Chamado ch WHERE ch.email = '{$email}'";
+                $dql = "SELECT a FROM SacBundle:Chamado a WHERE a.email = '{$email}'";
 
             }else{
 
-                $dql = "SELECT ch FROM SacBundle:Chamado ch WHERE (ch.idPedido = $idPedido  OR ch.email = '{$email}'";
+                $dql = "SELECT a FROM SacBundle:Chamado a WHERE (a.idPedido = $idPedido  OR a.email = '{$email}'";
             }
 
             $query = $em->createQuery($dql)->getResult();
 
         } else{
-            $dql = "SELECT ch FROM SacBundle:Chamado ch";
+            $dql = "SELECT a FROM SacBundle:Chamado a";
             $query = $em->createQuery($dql);
         }
 

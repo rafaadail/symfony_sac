@@ -17,12 +17,12 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Id</th>
-                <th>Titulo</th>
-                <th>Cliente</th>
-                <th>Pedido</th>
-                <th>E-mail</th>
-                <th>Data Criação</th>
+                <th>{{ knp_pagination_sortable(chamados, 'Id'|trans({foo:'bar'},'messages'), 'a.id' )|raw }}</th>
+                <th{% if chamados.isSorted('a.titulo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(chamados, 'Título', 'a.titulo')|raw }}</th>
+                <th{% if chamados.isSorted('a.email') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(chamados, 'E-mail', 'a.email')|raw }}</th>
+                <th{% if chamados.isSorted('a.idPedido') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(chamados, 'Id Pedido', 'a.idPedido')|raw }}</th>
+                <th{% if chamados.isSorted('a.email') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(chamados, 'E-mail', 'a.email')|raw }}</th>
+                <th{% if chamados.isSorted('a.dataCriacao') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(chamados, 'Data Criação', 'a.dataCriacao')|raw }}</th>
                 <th></th>
             </tr>
             </thead>
@@ -93,10 +93,7 @@
             </div>
         {% endif %}
 
-
-
     </div>
-
 
     <tfoot>
     <tr>
